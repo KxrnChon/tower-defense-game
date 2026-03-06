@@ -1,0 +1,61 @@
+@startuml
+class spell.FrostBite {
+- List<Enemy> enemies
+- Pane gameLayer
+- {static} AudioClip frostBiteSound
++ <<Create>> FrostBite(List<Enemy>,Pane)
++ void cast(double,double)
+}
+
+
+class spell.HealingBase {
+- GameLogic gameLogic
+- {static} AudioClip healingSound
++ <<Create>> HealingBase(GameLogic,Pane)
++ void cast(double,double)
+}
+
+
+abstract class spell.Spell {
+# String name
+# int damage
+# double range
+# String special
++ {abstract}void cast(double,double)
++ String getName()
++ int getDamage()
++ double getRange()
++ String getSpecial()
+}
+
+
+class spell.XSnap {
+- boolean isCasting
+- List<Enemy> enemies
+- Pane root
+- Runnable pauseGame
+- Runnable resumeGame
+- {static} List<Image> frames
+- {static} boolean framesLoaded
+- {static} AudioClip snapSound
++ <<Create>> XSnap(List<Enemy>,Pane,Runnable,Runnable)
++ void cast(double,double)
+}
+
+
+class spell.FireBall {
+- List<Enemy> enemies
+- Pane gameLayer
+- {static} AudioClip fireballSound
++ <<Create>> FireBall(List<Enemy>,Pane)
++ void cast(double,double)
+}
+
+
+
+
+spell.Spell <|-- spell.FrostBite
+spell.Spell <|-- spell.HealingBase
+spell.Spell <|-- spell.XSnap
+spell.Spell <|-- spell.FireBall
+@enduml

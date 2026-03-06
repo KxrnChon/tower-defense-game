@@ -1,0 +1,455 @@
+@startuml
+class Bullet {
+    # target : Enemy
+    # speed : double
+    # damage : int
+    # hasHit : boolean
+    # travelDistance : double
+    + Bullet(double startX, double startY, Enemy target, double speed, int damage)
+    + update(double deltaTime) : void
+    + draw(GraphicsContext gc) : void
+    + hasHit() : boolean
+    + getX() : double
+    + getY() : double
+    + getDamage() : int
+    + setDamage(int damage) : void
+    + getTarget() : Enemy
+}
+
+class IceBullet {
+    + IceBullet(double startX, double startY, Enemy target, double speed, int damage)
+    + update(double deltaTime) : void
+    + draw(GraphicsContext gc) : void
+}
+
+class Card {
+    # name : String
+    # damage : int
+    # spa : double
+    # range : double
+    # special : String
+    # summonFactory : Object
+    + Card()
+    + getName() : String
+    + getDamage() : int
+    + getSpa() : double
+    + getRange() : double
+    + getSpecial() : String
+    + summon() : Object
+}
+
+class SpellCard {
+    + SpellCard(Supplier<Spell> spellFactory)
+    + summon() : Spell
+}
+
+class TowerCard {
+    + TowerCard(Supplier<Tower> towerFactory)
+    + summon() : Tower
+}
+
+class Bat {
+    + Bat(EnemyPath enemyPath, int hp, int damage, double speed)
+}
+
+class Bomber {
+    + Bomber(EnemyPath enemyPath, int hp, int damage, double speed)
+    + die() : void
+}
+
+class Boss {
+    - attackTimer : double
+    + Boss(EnemyPath path, int hp, int damage, double speed)
+    + attackBase(double deltaTime) : void
+    + update(double deltaTime) : void
+    + onReachEnd() : void
+}
+
+class Enemy {
+    - index : int
+    - hp : int
+    - damage : int
+    - alive : boolean
+    - baseSpeed : double
+    - currentSpeed : double
+    # imagePath : String
+    - slowTimer : double
+    - slowPercent : double
+    - position : Point2D
+    + Enemy(EnemyPath enemyPath, int hp, int damage, double speed)
+    + getImagePath() : String
+    + update(double deltaTime) : void
+    + takeDamage(int damage) : void
+    + isAlive() : boolean
+    + die() : void
+    + isFinished() : boolean
+    + onReachEnd() : void
+    + hasReachedEnd() : boolean
+    + getIndex() : int
+    + getHp() : int
+    + setHp(int hp) : void
+    + getDamage() : int
+    + setDamage(int damage) : void
+    + getPosition() : Point2D
+    + getEnemyPath() : EnemyPath
+    + applySlow(double percent, double duration) : void
+    + setBaseSpeed(double baseSpeed) : void
+    + getBaseSpeed() : double
+    + setCurrentSpeed(double currentSpeed) : void
+    + isSlowed() : boolean
+    + getMaxHp() : int
+    + hasArmor() : boolean
+    + getArmor() : int
+    + getX() : double
+    + getY() : double
+    + setPosition(Point2D point2D) : void
+    + setIndex(int i) : void
+}
+
+class FlyingEnemy {
+    + FlyingEnemy(EnemyPath enemyPath, int hp, int damage, double speed)
+}
+
+class Orc {
+    - armor : int
+    + Orc(EnemyPath enemyPath, int hp, int damage, double speed)
+    + takeDamage(int damage) : void
+    + hasArmor() : boolean
+    + getArmor() : int
+}
+
+class Skeleton {
+    + Skeleton(EnemyPath enemyPath, int hp, int damage, double speed)
+}
+
+class Input {
+}
+
+class Mergeable {
+}
+
+class EnemySpawn {
+    + size : double
+    + color : Color
+    + shape : VisualShape
+    - spawned : int
+    - lastSpawnTime : double
+    - timePassed : double
+    + EnemySpawn(GameLogic gameLogic, Supplier<Enemy> factory, double startTime , int count, double interval,
+                      double size, Color color, VisualShape shape)
+    + update(double deltaTime) : void
+    + isFinished() : boolean
+}
+
+class GameLogic {
+    - previewRange : Circle
+    - gameLoop : AnimationTimer
+    - gasCanvas : Canvas
+    - cardBarOpen : boolean
+    - waveActive : boolean
+    - paused : boolean
+    - hpLossSound : AudioClip
+    - cardSound : AudioClip
+    - mergeSound : AudioClip
+    - winSound : AudioClip
+    - gameOverSound : AudioClip
+    - backgroundMusic : MediaPlayer
+    - lastTime : long
+    - currentWave : Wave
+    - currentWaveNum : int
+    - selectedCard : Card
+    - backgroundImageView : ImageView
+    - hpBarForeground : Rectangle
+    - hpTextLabel : Text
+    - enemyPath : EnemyPath
+    - baseHP : int
+    - gameState : GameState
+    + GameLogic(Pane root, Runnable onExitToMenu)
+    + getBullets() : List<Bullet>
+    + startGame() : void
+    - setupLoop() : void
+    + handle(long now) : void
+    + canPlace(double x,double y) : boolean
+    + updateInput() : void
+    + spawnTower(Tower tower, String imagePath, double size) : void
+    + spawnEnemy(Enemy enemy, EnemySpawn spawn) : void
+    + updateTowers(double deltaTime, List<Enemy> enemies) : void
+    + updateEnemies(double deltaTime) : void
+    - cleanupEnemies() : void
+    + updateBullets(double deltaTime) : void
+    - isOverlappingTower(double x, double y) : boolean
+    - createWave(int waveNum) : void
+    - selectCard(Card card) : void
+    - createPath() : void
+    - createTower() : void
+    + stunNearbyTowers(Point2D position, double radius, double duration) : void
+    + showStunEffect(Point2D position, double radius, double duration) : void
+    + stopGame() : void
+    - showRangePreview(double x, double y, double range) : void
+    - hideRangePreview() : void
+    - drawGasEffects() : void
+    + getSelectedCard() : Object
+    - getImagePathForTower(Tower tower) : String
+    - checkWaveEnd() : void
+    - showWaveEndUI() : void
+    - showGameOverUI() : void
+    - applyMainButtonStyle(Button btn) : void
+    - drawHP() : void
+    + damageBase(int dmg) : void
+    - playBaseHitEffect() : void
+    + getBaseHP() : int
+    + setBaseHP(int baseHP) : void
+    + resetGame() : void
+    - getTowerAt(double x, double y) : Tower
+    - performFusion(Tower base, Tower ingredient) : void
+    - removeSelectedCard() : void
+    - playFusionEffect(TowerView newTowerView) : void
+    - setupHPUI() : void
+    - loadSounds() : void
+    - playBackgroundMusic() : void
+    - playSound(String path) : void
+    + pauseGame() : void
+    + resumeGame() : void
+    + getEnemies() : List<Enemy>
+    + getTowers() : List<Tower>
+}
+
+class Wave {
+    + addSpawn(EnemySpawn spawn) : void
+    + update(double elapsedTime) : void
+    + isFinished() : boolean
+}
+
+class Main {
+    - primaryStage : Stage
+    + start(Stage stage) : void
+    - createMenuScene() : Scene
+    - styleButton(Button btn) : void
+    - createGameScene() : Scene
+    + handle(long now) : void
+}
+
+class EnemyPath {
+    + EnemyPath(List<Waypoint> waypoints)
+    + getWaypoint(int index) : Waypoint
+    + length() : int
+    + getWaypoints() : List<Waypoint>
+    + isOnPath(double x, double y) : boolean
+    - distanceToSegment(
+            double px, double py,
+            double x1, double y1,
+            double x2, double y2) : double
+    + addWaypoint(Waypoint waypoint) : void
+}
+
+class Waypoint {
+    - position : Point2D
+    + Waypoint(double x, double y)
+    + getPosition() : Point2D
+    + setPosition(Point2D position) : void
+    + getX() : double
+    + getY() : double
+}
+
+class FireBall {
+    + FireBall(List<Enemy> enemies, Pane gameLayer)
+    + cast(double x, double y) : void
+}
+
+class FrostBite {
+    + FrostBite(List<Enemy> enemies, Pane gameLayer)
+    + cast(double x, double y) : void
+}
+
+class HealingBase {
+    + HealingBase(GameLogic gameLogic, Pane gameLayer)
+    + cast(double x, double y) : void
+}
+
+class Spell {
+    # name : String
+    # damage : int
+    # range : double
+    # special : String
+    + getName() : String
+    + getDamage() : int
+    + getRange() : double
+    + getSpecial() : String
+}
+
+class XSnap {
+    - isCasting : boolean
+    + XSnap(List<Enemy> enemies,
+                 Pane root,
+                 Runnable pauseGame,
+                 Runnable resumeGame)
+    + cast(double x, double y) : void
+}
+
+class AOETower {
+    # gasRadius : double
+    # maxGasRadius : double
+    # gasExpandSpeed : double
+    # gasOpacity : double
+    # gasExpandTime : double
+    # gasActive : boolean
+    + AOETower(double x, double y,double range,double cooldown,int damage)
+    + update(double deltaTime, List<Enemy> enemies, List<Bullet> bullets) : void
+    # updateGasEffect(double deltaTime) : void
+    + drawGas(GraphicsContext gc) : void
+    # findTarget(List<Enemy> enemies) : List<Enemy>
+    # shootGas() : void
+    # shoot(Enemy target, List<Bullet> bullets) : void
+}
+
+class GasTower {
+    + GasTower(double x, double y)
+    + getFusionResult(Tower other) : Tower
+}
+
+class GlacierTower {
+    + GlacierTower(double x, double y)
+    # findTarget(List<Enemy> enemies) : List<Enemy>
+    # shoot(Enemy target, List<Bullet> bullets) : void
+}
+
+class IceTower {
+    + IceTower(double x, double y)
+    # shoot(Enemy target, List<Bullet> bullets) : void
+    + getFusionResult(Tower other) : Tower
+}
+
+class MistTower {
+    + MistTower(double x, double y)
+    # shoot(Enemy target, List<Bullet> bullets) : void
+    + drawGas(GraphicsContext gc) : void
+}
+
+class PlasmaTower {
+    + PlasmaTower(double x, double y)
+    + drawGas(GraphicsContext gc) : void
+}
+
+class RangeTower {
+    + RangeTower(double x,double y)
+    # shoot(Enemy target, List<Bullet> bullets) : void
+    # findTarget(List<Enemy> enemies) : List<Enemy>
+    + getFusionResult(Tower other) : Tower
+}
+
+class SuperconductTower {
+    + SuperconductTower(double x, double y)
+    # shoot(Enemy target, List<Bullet> bullets) : void
+}
+
+class TeslaTower {
+    + TeslaTower(double x, double y)
+    # findTarget(List<Enemy> enemies) : List<Enemy>
+    # shoot(Enemy target, List<Bullet> bullets) : void
+}
+
+class TornadoTower {
+    + TornadoTower(double x, double y)
+    + drawGas(GraphicsContext gc) : void
+    # findTarget(List<Enemy> enemies) : List<Enemy>
+}
+
+class Tower {
+    # name : String
+    # range : double
+    # cooldown : double
+    # timer : double
+    # imagePath : String
+    # placeSoundPath : String
+    # bulletSpeed : double
+    # stunTimer : double
+    # stunned : boolean
+    + Tower(double x, double y, double range, double cooldown, int damage)
+    + update(double deltaTime, List<Enemy> enemies, List<Bullet> bullets) : void
+    # findTarget(List<Enemy> enemies) : List<Enemy>
+    # notInRange(Enemy e) : boolean
+    + stun(double duration) : void
+    + getX() : double
+    + getY() : double
+    + getRange() : double
+    + getBulletDamage() : int
+    + getBulletSpeed() : double
+    + setBulletSpeed(double bulletSpeed) : void
+    + getCooldown() : double
+    + setPosition(double x, double y) : void
+    + getName() : String
+    + getImagePath() : String
+    + setImagePath(String path) : void
+    + getPlaceSoundPath() : String
+}
+
+class ZapTower {
+    + ZapTower(double x, double y)
+    # shoot(Enemy target, List<Bullet> bullets) : void
+    + getFusionResult(Tower other) : Tower
+}
+
+class CardBar {
+    + CardBar()
+}
+
+class CardView {
+    + CardView(Card card, Consumer<Card> onSelect)
+    + getCard() : Card
+    + setSelected(boolean selected) : void
+}
+
+class EnemyView {
+    + EnemyView(Enemy enemy, double size)
+    + sync() : void
+    + getEnemy() : Enemy
+}
+
+class EnemyViewFactory {
+    - EnemyViewFactory()
+}
+
+class PathView {
+    + PathView(EnemyPath path)
+}
+
+class TowerView {
+    + TowerView(Tower tower, String imagePath, double size)
+    + getTower() : Tower
+}
+
+Bullet <|-- IceBullet
+Card <|-- SpellCard
+Card <|-- TowerCard
+FlyingEnemy <|-- Bat
+Enemy <|-- Bomber
+Enemy <|-- Boss
+Enemy <|-- FlyingEnemy
+Enemy <|-- Orc
+Enemy <|-- Skeleton
+Application <|-- Main
+Spell <|-- FireBall
+Spell <|-- FrostBite
+Spell <|-- HealingBase
+Spell <|-- XSnap
+Tower <|-- AOETower
+AOETower <|-- GasTower
+Mergeable <|.. GasTower
+Tower <|-- GlacierTower
+Tower <|-- IceTower
+Mergeable <|.. IceTower
+AOETower <|-- MistTower
+AOETower <|-- PlasmaTower
+Tower <|-- RangeTower
+Mergeable <|.. RangeTower
+Tower <|-- SuperconductTower
+Tower <|-- TeslaTower
+AOETower <|-- TornadoTower
+Tower <|-- ZapTower
+Mergeable <|.. ZapTower
+HBox <|-- CardBar
+StackPane <|-- CardView
+StackPane <|-- EnemyView
+Group <|-- PathView
+StackPane <|-- TowerView
+@enduml

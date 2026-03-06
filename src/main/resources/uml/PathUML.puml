@@ -1,0 +1,24 @@
+@startuml
+class path.EnemyPath {
+- List<Waypoint> waypoints
++ <<Create>> EnemyPath(List<Waypoint>)
++ Waypoint getWaypoint(int)
++ int length()
++ List<Waypoint> getWaypoints()
++ boolean isOnPath(double,double)
+- double distanceToSegment(double,double,double,double,double,double)
++ void addWaypoint(Waypoint)
+}
+
+
+class path.Waypoint {
+- Point2D position
++ <<Create>> Waypoint(double,double)
++ Point2D getPosition()
++ void setPosition(Point2D)
++ double getX()
++ double getY()
+}
+
+
+@enduml

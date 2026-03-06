@@ -1,0 +1,27 @@
+@startuml
+class input.Input {
+- {static} Set<KeyCode> keysDown
+- {static} Set<KeyCode> keysPressed
+- {static} Set<KeyCode> keysReleased
+- {static} boolean leftPressed
+- {static} boolean leftJustPressed
+- {static} boolean rightPressed
+- {static} boolean rightJustPressed
+- {static} double mouseX
+- {static} double mouseY
++ {static} void onKeyPressed(KeyEvent)
++ {static} void onKeyReleased(KeyEvent)
++ {static} boolean isPressed(KeyCode)
++ {static} void update()
++ {static} void setMousePosition(double,double)
++ {static} double getMouseX()
++ {static} double getMouseY()
++ {static} void reset()
++ {static} void onMousePressed(javafx.scene.input.MouseButton)
++ {static} void onMouseReleased(javafx.scene.input.MouseButton)
++ {static} boolean isLeftClick()
++ {static} boolean isRightClick()
+}
+
+
+@enduml

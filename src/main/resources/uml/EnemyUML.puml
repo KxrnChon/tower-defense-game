@@ -1,0 +1,89 @@
+@startuml
+class enemy.Skeleton {
++ <<Create>> Skeleton(EnemyPath,int,int,double)
+}
+
+class enemy.FlyingEnemy {
++ <<Create>> FlyingEnemy(EnemyPath,int,int,double)
+}
+
+class enemy.Orc {
+- int armor
++ <<Create>> Orc(EnemyPath,int,int,double)
++ void takeDamage(int)
++ boolean hasArmor()
++ int getArmor()
+}
+
+
+class enemy.Bat {
++ <<Create>> Bat(EnemyPath,int,int,double)
+}
+
+class enemy.Bomber {
++ <<Create>> Bomber(EnemyPath,int,int,double)
++ void die()
+}
+
+class enemy.Boss {
+- double attackTimer
++ <<Create>> Boss(EnemyPath,int,int,double)
++ void attackBase(double)
++ void update(double)
++ void onReachEnd()
+}
+
+
+class enemy.Enemy {
+- EnemyPath enemyPath
+- int index
+- int hp
+- int damage
+- boolean alive
+- double baseSpeed
+- double currentSpeed
+- int maxHp
+# String imagePath
+- double slowTimer
+- double slowPercent
+- Point2D position
++ <<Create>> Enemy(EnemyPath,int,int,double)
++ String getImagePath()
++ void update(double)
++ void takeDamage(int)
++ boolean isAlive()
++ void die()
++ boolean isFinished()
++ void onReachEnd()
++ boolean hasReachedEnd()
++ int getIndex()
++ int getHp()
++ void setHp(int)
++ int getDamage()
++ void setDamage(int)
++ Point2D getPosition()
++ EnemyPath getEnemyPath()
++ void applySlow(double,double)
++ void setBaseSpeed(double)
++ double getBaseSpeed()
++ void setCurrentSpeed(double)
++ boolean isSlowed()
++ int getMaxHp()
++ boolean hasArmor()
++ int getArmor()
++ double getX()
++ double getY()
++ void setPosition(Point2D)
++ void setIndex(int)
+}
+
+
+
+
+enemy.Enemy <|-- enemy.Skeleton
+enemy.Enemy <|-- enemy.FlyingEnemy
+enemy.Enemy <|-- enemy.Orc
+enemy.FlyingEnemy <|-- enemy.Bat
+enemy.Enemy <|-- enemy.Bomber
+enemy.Enemy <|-- enemy.Boss
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+class logic.EnemySpawn {
+- Supplier<Enemy> factory
+- int count
+- double interval
+- GameLogic gameLogic
++ double size
++ Color color
++ VisualShape shape
+- double startTime
+- int spawned
+- double lastSpawnTime
+- double timePassed
++ <<Create>> EnemySpawn(GameLogic,Supplier<Enemy>,double,int,double,double,Color,VisualShape)
++ void update(double)
++ boolean isFinished()
+}
+
+
+class logic.Wave {
+- List<EnemySpawn> spawns
++ void addSpawn(EnemySpawn)
++ void update(double)
++ boolean isFinished()
+}
+
+
+@enduml

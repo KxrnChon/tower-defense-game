@@ -1,0 +1,37 @@
+@startuml
+class card.TowerCard {
+- Supplier<Tower> towerFactory
++ <<Create>> TowerCard(Supplier<Tower>)
++ Tower summon()
+}
+
+
+class card.SpellCard {
+- Supplier<Spell> spellFactory
++ <<Create>> SpellCard(Supplier<Spell>)
++ Spell summon()
+}
+
+
+abstract class card.Card {
+# String name
+# int damage
+# double spa
+# double range
+# String special
+# Object summonFactory
++ <<Create>> Card()
++ String getName()
++ int getDamage()
++ double getSpa()
++ double getRange()
++ String getSpecial()
++ Object summon()
+}
+
+
+
+
+card.Card <|-- card.TowerCard
+card.Card <|-- card.SpellCard
+@enduml

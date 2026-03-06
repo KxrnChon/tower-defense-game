@@ -1,0 +1,58 @@
+@startuml
+
+class GameLogic {
+    - Pane gameLayer
+    - Pane uiLayer
+    - Wave currentWave
+    - int currentWaveNum
+    - List<Tower> towers
+    - List<Enemy> enemies
+    - List<Bullet> bullets
+    - List<EnemyView> enemyViews
+    - List<TowerView> towerViews
+    - Card selectedCard
+    - CardBar cardBar
+    - EnemyPath enemyPath
+    - int baseHP
+    - GameState gameState
+
+    + startGame()
+    + update(deltaTime)
+    + spawnTower(tower, imagePath, size)
+    + spawnEnemy(enemy, spawn)
+    + updateTowers(deltaTime, enemies)
+    + updateEnemies(deltaTime)
+    + updateBullets(deltaTime)
+    + damageBase(dmg)
+}
+
+class Tower
+class Enemy
+class Bullet
+class Wave
+class Card
+class TowerCard
+class SpellCard
+class EnemyView
+class TowerView
+class EnemyPath
+class Waypoint
+class Spell
+
+GameLogic --> Tower
+GameLogic --> Enemy
+GameLogic --> Bullet
+GameLogic --> Wave
+GameLogic --> Card
+GameLogic --> EnemyView
+GameLogic --> TowerView
+GameLogic --> EnemyPath
+
+Card <|-- TowerCard
+Card <|-- SpellCard
+
+EnemyPath --> Waypoint
+
+SpellCard --> Spell
+
+@enduml

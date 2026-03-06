@@ -1,0 +1,129 @@
+@startuml
+class tower.GasTower {
++ <<Create>> GasTower(double,double)
++ Tower getFusionResult(Tower)
+}
+
+abstract class tower.AOETower {
+# double gasRadius
+# double maxGasRadius
+# double gasExpandSpeed
+# double gasOpacity
+# double gasExpandTime
+# {static} double GAS_FADE_TIME
+# boolean gasActive
++ <<Create>> AOETower(double,double,double,double,int)
++ void update(double,List<Enemy>,List<Bullet>)
+# void updateGasEffect(double)
++ void drawGas(GraphicsContext)
+# List<Enemy> findTarget(List<Enemy>)
+# void shootGas()
+# void shoot(Enemy,List<Bullet>)
+}
+
+
+class tower.TornadoTower {
++ <<Create>> TornadoTower(double,double)
++ void drawGas(GraphicsContext)
+# List<Enemy> findTarget(List<Enemy>)
+}
+
+class tower.GlacierTower {
++ <<Create>> GlacierTower(double,double)
+# List<Enemy> findTarget(List<Enemy>)
+# void shoot(Enemy,List<Bullet>)
+}
+
+class tower.TeslaTower {
++ <<Create>> TeslaTower(double,double)
+# List<Enemy> findTarget(List<Enemy>)
+# void shoot(Enemy,List<Bullet>)
+}
+
+class tower.PlasmaTower {
++ <<Create>> PlasmaTower(double,double)
++ void drawGas(GraphicsContext)
+}
+
+abstract class tower.Tower {
+# String name
+# double x
+# double range
+# double cooldown
+# double timer
+# String imagePath
+# String placeSoundPath
+# double bulletSpeed
+# int bulletDamage
+# double stunTimer
+# boolean stunned
++ <<Create>> Tower(double,double,double,double,int)
++ void update(double,List<Enemy>,List<Bullet>)
+# List<Enemy> findTarget(List<Enemy>)
+# boolean notInRange(Enemy)
++ void stun(double)
+# {abstract}void shoot(Enemy,List<Bullet>)
++ double getX()
++ double getY()
++ double getRange()
++ int getBulletDamage()
++ double getBulletSpeed()
++ void setBulletSpeed(double)
++ double getCooldown()
++ void setPosition(double,double)
++ String getName()
++ String getImagePath()
++ void setImagePath(String)
++ String getPlaceSoundPath()
++ javafx.geometry.Point2D getPosition()
+}
+
+
+class tower.ZapTower {
++ <<Create>> ZapTower(double,double)
+# void shoot(Enemy,List<Bullet>)
++ Tower getFusionResult(Tower)
+}
+
+class tower.RangeTower {
++ <<Create>> RangeTower(double,double)
+# void shoot(Enemy,List<Bullet>)
+# List<Enemy> findTarget(List<Enemy>)
++ Tower getFusionResult(Tower)
+}
+
+class tower.SuperconductTower {
++ <<Create>> SuperconductTower(double,double)
+# void shoot(Enemy,List<Bullet>)
+}
+
+class tower.IceTower {
++ <<Create>> IceTower(double,double)
+# void shoot(Enemy,List<Bullet>)
++ Tower getFusionResult(Tower)
+}
+
+class tower.MistTower {
++ <<Create>> MistTower(double,double)
+# void shoot(Enemy,List<Bullet>)
++ void drawGas(GraphicsContext)
+}
+
+
+
+Interface.Mergeable <|.. tower.GasTower
+tower.AOETower <|-- tower.GasTower
+tower.Tower <|-- tower.AOETower
+tower.AOETower <|-- tower.TornadoTower
+tower.Tower <|-- tower.GlacierTower
+tower.Tower <|-- tower.TeslaTower
+tower.AOETower <|-- tower.PlasmaTower
+Interface.Mergeable <|.. tower.ZapTower
+tower.Tower <|-- tower.ZapTower
+Interface.Mergeable <|.. tower.RangeTower
+tower.Tower <|-- tower.RangeTower
+tower.Tower <|-- tower.SuperconductTower
+Interface.Mergeable <|.. tower.IceTower
+tower.Tower <|-- tower.IceTower
+tower.AOETower <|-- tower.MistTower
+@enduml

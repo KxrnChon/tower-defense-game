@@ -1,0 +1,31 @@
+@startuml
+class bullets.Bullet {
+# double x
+# Enemy target
+# double speed
+# int damage
+# boolean hasHit
+# double travelDistance
+# {static} int SIZE
++ <<Create>> Bullet(double,double,Enemy,double,int)
++ void update(double)
++ void draw(GraphicsContext)
++ boolean hasHit()
++ double getX()
++ double getY()
++ int getDamage()
++ void setDamage(int)
++ Enemy getTarget()
+}
+
+
+class bullets.IceBullet {
++ <<Create>> IceBullet(double,double,Enemy,double,int)
++ void update(double)
++ void draw(GraphicsContext)
+}
+
+
+
+bullets.Bullet <|-- bullets.IceBullet
+@enduml
